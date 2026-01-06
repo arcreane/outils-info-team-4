@@ -10,7 +10,7 @@ Ce projet est un jeu de type Shoot Them Up développé en Python avec PyGame dan
 
 
 
-Fonctionnalités prévues
+Fonctionnalités prévues:
 
 \- Un vaisseau spatial contrôlé par le joueur.
 
