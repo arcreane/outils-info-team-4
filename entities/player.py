@@ -1,15 +1,15 @@
-import pygame
-from .entity import Entity
+from entities.entity import Entity
 
 class Player(Entity):
-    def __init__(self, x, y):
-        super().__init__(x, y)
-        self.image.fill((0, 0, 255)) #couleur du joueur
-        self.speed = 5
-
-    def update(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= self.speed
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += self.speed
+    def __init__(self, name, x, y):
+        # On appelle d'abord le constructeur du parent (Entity)
+        super().__init__(x, y, 50, 50)
+        
+        # Couleur bleu (placeholder pour le sprite futur)
+        self.image.fill((0, 0, 255))
+        
+        # Stats spécifiques
+        self.name = name  
+        self.score = 0
+        self.max_health = 100
+        self.current_health = 100
