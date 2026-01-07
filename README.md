@@ -1,7 +1,7 @@
 PROJET SHOOT THEM UP
 
 Description :
-Ce projet est un jeu de tir developpe en Python avec Pygame
+Ce projet est un jeu de tir développe en Python avec Pygame
 
 EQUIPE
 
@@ -11,33 +11,73 @@ EQUIPE
 
 
 ARCHITECTURE DU PROJET
-Nous avons organise le code en modules independants :
+Rangement des fichier/dossiers :
 
-* core : Contient la boucle de jeu (GameLoop) et la gestion de la fenetre.
-* entities : Contient les objets vivants (Joueur, Ennemis) heritant de la classe Entity.
-* weapons : Gere les armes et les projectiles.
-* ui : Gere l'affichage tete haute (Score) et les menus.
+* core : Contient la boucle de jeu (GameLoop) et la gestion de la fenêtre.
+* entities : Dossier qui contient les objets du jeu. 
+* weapons : Gere les armes et les projectiles (pour l'instant vide)
+* ui : Gere l'affichage tête haute (Score) et les menus.
 * assets : Dossier de stockage pour les images et les sons.
+* &nbsp; - main.py : Sert uniquement a lancer le jeu.
+* &nbsp; - entity.py : La base commune (position, image).
+* &nbsp; - player.py : Le code du joueur.
+* &nbsp; - enemy.py : Le code des ennemis.
+
+
+
+
 
 REGLES DE COLLABORATION
-Pour garantir la qualite du projet, l'equipe suit ces regles :
-
-1. BRANCHES
-   Ne jamais travailler directement sur la branche main.
-   Creer une branche par tache (exemple : feat/player-movement).
-2. COMMITS
-   Nous utilisons la convention Angular pour les messages :
-
-* feat(scope) : pour une nouvelle fonctionnalité
-* fix(scope) : pour une correction de bug
-* docs(scope) : pour la documentation
-
-3. WORKFLOW
-   Toujours effectuer un "git pull" avant de commencer a coder pour eviter les conflits.
 
 
 
-Lien Trello : 
+1\. BRANCHES
+
+Ne jamais travailler directement sur la branche main.
+
+Créer une branche par tache (exemple : feat/player-movement).
+
+
+
+2\. COMMITS
+
+Nous utilisons la convention angular : type(scope): message
+
+
+
+Les types :
+
+feat : pour une nouvelle fonctionnalité
+
+fix : pour une correction de bug
+
+docs : pour la documentation
+
+
+
+Le scope :
+
+C'est  le nom du fichier ou du dossier que tu as modifie.
+
+Cela permet de savoir tout de suite ou a eu lieu le changement.
+
+
+
+Exemples de scope :
+
+\- Si tu modifies player.py > feat(player): ajout de la vie
+
+\- Si tu modifies game.py > fix(core): correction du lag
+
+\- Si tu modifies le readme > docs(readme): mise a jour des règles
+
+
+
+3\. WORKFLOW
+
+Toujours effectuer un "git pull" avant de commencer a coder pour éviter les problèmes.
+
+Lien Trello :
 
 
 
