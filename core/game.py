@@ -6,7 +6,7 @@ from entities.enemy import Enemy
 class Game:
     def __init__(self, player_name):
         pygame.init()
-        # config ecran
+        # ecran
         self.screen_width = 800
         self.screen_height = 600
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -14,23 +14,27 @@ class Game:
         
         self.clock = pygame.time.Clock()
         self.running = True
+        
+        # etat menu
+        self.in_menu = True
+        # police
+        self.font = pygame.font.Font(None, 50)
 
-        # groupes de sprites
+        # sprites
         self.all_sprites = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         
-        # creation joueur
+        # joueur
         self.player = Player(self.screen_width // 2, self.screen_height - 100, player_name)
         self.all_sprites.add(self.player)
 
-        # creation des 5 ennemis
+        # ennemis
         for _ in range(5):
             enemy = Enemy()
             self.all_sprites.add(enemy)
             self.enemies.add(enemy)
 
     def run(self):
-        # boucle du jeu
         while self.running:
             self.handle_input()
             self.update()
@@ -40,17 +44,32 @@ class Game:
         sys.exit()
 
     def handle_input(self):
-        # gestion fermeture fenetre
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            
+            # validation menu
+            if self.in_menu and event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    self.in_menu = False
 
     def update(self):
-        # update de tout le monde
+        # pause si menu
+        if self.in_menu:
+            return
+            
         self.all_sprites.update()
 
     def draw(self):
-        # fond noir et dessin
         self.screen.fill((0, 0, 0))
-        self.all_sprites.draw(self.screen)
+
+        if self.in_menu:
+            # texte menu
+            text = self.font.render("PRESS ENTER TO START", True, (255, 255, 255))
+            rect = text.get_rect(center=(self.screen_width//2, self.screen_height//2))
+            self.screen.blit(text, rect)
+        else:
+            # jeu
+            self.all_sprites.draw(self.screen)
+            
         pygame.display.flip()
