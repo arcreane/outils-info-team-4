@@ -1,18 +1,19 @@
 from core.game import Game
 
-if __name__ == "__main__":
-    #Interface de lancement (tempo)
+def main():
     print("--------------------------------")
-    print("   BIENVENUE DANS SHOOT THEM UP  ")
+    print("   BIENVENUE DANS SHOOT THEM UP   ")
     print("--------------------------------")
     
-    pseudo = input("Entrez votre nom de pilote : ")
+    # On demande le nom
+    player_name = input("Entrez votre nom de pilote : ")
     
-    if pseudo == "":
-        pseudo = "Pilote Inconnu" # Nom par défaut si vide
-
-    print(f"Lancement de la mission pour {pseudo}...")
-
-    # ÉTAPE 2 : Démarrage du moteur graphique avec le nom choisi
-    game = Game(pseudo)
+    print(f"Lancement de la mission pour {player_name}...")
+    
+    # On lance le jeu
+    # C'est ici que pygame.init() sera appelé (dans le constructeur de Game)
+    game = Game(player_name)
     game.run()
+
+if __name__ == "__main__":
+    main()
