@@ -1,6 +1,6 @@
 class Enemy:
     def __init__(self, x, y):
-        # Charger l'image du sprite ennemi
+        # Charger l'image du sprite ennemis
         self.image = pygame.image.load('smilie_cookie.png').convert_alpha()
 
         # Redimensionner le sprite (ajustez la taille selon vos besoins)
