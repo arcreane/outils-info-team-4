@@ -7,7 +7,7 @@ EQUIPE
 
 * Ezechiel
 * Antonin
-
+* Maxime.L
 
 
 ARCHITECTURE DU PROJET
