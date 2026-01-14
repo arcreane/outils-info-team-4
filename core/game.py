@@ -1,75 +1,90 @@
 import pygame
-import sys
 from entities.player import Player
 from entities.enemy import Enemy
-from entities.projectile import Projectile
 
 class Game:
     def __init__(self, player_name):
         pygame.init()
-        self.screen_width = 800
-        self.screen_height = 600
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+        self.screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Shoot Them Up")
         
-        self.clock = pygame.time.Clock()
         self.running = True
-        self.in_menu = True
-        self.font = pygame.font.Font(None, 50)
-
-        self.all_sprites = pygame.sprite.Group()
-        self.enemies = pygame.sprite.Group()
-        self.projectiles = pygame.sprite.Group()
+        self.is_playing = False # On commence sur l'écran d'accueil
         
-        self.player = Player(self.screen_width // 2, self.screen_height - 100, player_name)
+        self.player = Player(400, 500, player_name)
+        self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
+        
+        self.all_enemies = pygame.sprite.Group()
+        self.spawn_enemies() 
 
-        for _ in range(5):
+        self.font = pygame.font.SysFont("Arial", 40, bold=True)
+
+    def spawn_enemies(self):
+        for _ in range(5): 
             enemy = Enemy()
+            self.all_enemies.add(enemy)
             self.all_sprites.add(enemy)
-            self.enemies.add(enemy)
 
-    def run(self):
-        while self.running:
-            self.handle_input()
-            self.update()
-            self.draw()
-            self.clock.tick(60)
-        pygame.quit()
-        sys.exit()
+    def reset_game(self):
+        for enemy in self.all_enemies:
+            enemy.kill()
+        self.spawn_enemies()
+        self.player.rect.x = 400
+        self.is_playing = True
 
     def handle_input(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
             
-            if self.in_menu:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                    self.in_menu = False
-            else:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    self.shoot()
-
-    def shoot(self):
-        p = Projectile(self.player.rect.centerx, self.player.rect.top)
-        self.all_sprites.add(p)
-        self.projectiles.add(p)
+            if event.type == pygame.KEYDOWN:
+                # Si on joue : ESPACE pour tirer
+                if self.is_playing:
+                    if event.key == pygame.K_SPACE:
+                        self.player.launch_projectile()
+                
+                # Si on ne joue pas : ENTREE pour lancer
+                else:
+                    if event.key == pygame.K_RETURN:
+                        self.reset_game()
 
     def update(self):
-        if self.in_menu:
-            return
+        self.screen.fill((0, 0, 0)) # Fond noir
+
+        if self.is_playing:
+            # --- JEU EN COURS ---
+            self.player.update()
+            self.all_enemies.update()
             
-        self.all_sprites.update()
-        pygame.sprite.groupcollide(self.projectiles, self.enemies, True, True)
+            # Collisions
+            pygame.sprite.groupcollide(self.player.all_projectiles, self.all_enemies, True, True)
+            
+            # Vérification Victoire
+            if len(self.all_enemies) == 0:
+                self.is_playing = False
 
-    def draw(self):
-        self.screen.fill((0, 0, 0))
-
-        if self.in_menu:
-            text = self.font.render("PRESS ENTER TO START", True, (255, 255, 255))
-            rect = text.get_rect(center=(self.screen_width//2, self.screen_height//2))
-            self.screen.blit(text, rect)
-        else:
             self.all_sprites.draw(self.screen)
-            
+            self.player.all_projectiles.draw(self.screen)
+            self.player.all_projectiles.update()
+
+        else:
+            # --- ECRAN ACCUEIL / FIN ---
+            if len(self.all_enemies) > 0:
+                msg = f"Bienvenue {self.player.name} ! Entrée pour jouer"
+            else:
+                msg = "GG LE SANG ! Entrée pour rejouer"
+
+            text_surf = self.font.render(msg, True, (255, 255, 255))
+            self.screen.blit(text_surf, text_surf.get_rect(center=(400, 300)))
+
         pygame.display.flip()
+
+    def run(self):
+        clock = pygame.time.Clock()
+        while self.running:
+            self.handle_input()
+            self.update()
+            clock.tick(60)
+        
+        pygame.quit()
