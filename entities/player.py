@@ -6,7 +6,11 @@ class Player(Entity):
         super().__init__(x, y, 50, 50)
         # bleu
         self.image.fill((0, 0, 255))
-        
+    def shoot(self):
+        if self.shoot_sound is not None:
+            self.shoot_sound.play()
+        else:
+            print(f"DEBUG: {self.name} tire, mais le son n'est pas encore chargé.
         self.name = name
         self.score = 0
         self.max_health = 100
